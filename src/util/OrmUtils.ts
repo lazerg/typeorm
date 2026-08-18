@@ -167,7 +167,7 @@ export class OrmUtils {
     public static deepValue(obj: ObjectLiteral, path: string): any {
         const segments = path.split(".")
         for (let i = 0, len = segments.length; i < len; i++) {
-            obj = obj[segments[i]]
+            obj = obj?.[segments[i]]
         }
         return obj
     }
