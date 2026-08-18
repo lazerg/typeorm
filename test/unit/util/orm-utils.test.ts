@@ -271,6 +271,26 @@ describe(`OrmUtils`, () => {
         })
     })
 
+    describe("deepValue", () => {
+        it("should return the value the path points to", () => {
+            expect(
+                OrmUtils.deepValue({ meta: { tags: true } }, "meta.tags"),
+            ).to.equal(true)
+        })
+
+        it("should return undefined when a segment of the path is missing", () => {
+            expect(OrmUtils.deepValue({ id: "ASC" }, "meta.tags")).to.equal(
+                undefined,
+            )
+        })
+
+        it("should return undefined when a segment of the path is null", () => {
+            expect(OrmUtils.deepValue({ meta: null }, "meta.tags")).to.equal(
+                undefined,
+            )
+        })
+    })
+
     describe("normalizeWhereCriteria", () => {
         it("throws on null/undefined by default when no options are provided", () => {
             // unconfigured invalidWhereValuesBehavior defaults to "throw",

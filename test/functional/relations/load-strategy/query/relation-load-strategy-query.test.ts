@@ -367,6 +367,39 @@ describe("relations > load-strategy > query", () => {
                     )
                 }),
             ))
+
+        it("should load a relation declared inside an embedded entity when select is given", () =>
+            Promise.all(
+                dataSources.map(async (dataSource) => {
+                    const bookRepository = dataSource.getRepository(Book)
+                    const categoryRepository =
+                        dataSource.getRepository(Category)
+
+                    const category = await categoryRepository.save(
+                        new Category(),
+                    )
+                    await bookRepository.save(
+                        bookRepository.create({
+                            title: "book1",
+                            text: "text1",
+                            meta: { note: "note1", categories: [category] },
+                        }),
+                    )
+
+                    const results = await bookRepository.find({
+                        relations: { meta: { categories: true } },
+                        select: { id: true },
+                        relationLoadStrategy: "query",
+                    })
+
+                    expect(results).to.have.length(1)
+                    expect(results[0].meta.categories).to.be.an("array")
+                    expect(results[0].meta.categories).to.have.length(1)
+                    expect(results[0].meta.categories[0].id).to.equal(
+                        category.id,
+                    )
+                }),
+            ))
     })
 
     describe("DataSource-level strategy", () => {
