@@ -398,6 +398,7 @@ describe("query builder > joins", () => {
 
         it("should not nest a child left join inside its left joined parent", () => {
             for (const dataSource of dataSources) {
+                // For github issue #12792
                 const query = dataSource.manager
                     .createQueryBuilder(Post, "post")
                     .leftJoinAndSelect("post.categories", "categories")
