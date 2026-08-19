@@ -2580,8 +2580,7 @@ export class SelectQueryBuilder<Entity extends ObjectLiteral>
         childJoins = "",
         nestChildJoins = false,
     ): string {
-        const nested = childJoins !== "" && nestChildJoins
-        const joinedTable = nested
+        const joinedTable = nestChildJoins
             ? "(" + tableName + " " + this.escape(alias) + childJoins + ")"
             : tableName + " " + this.escape(alias)
 
@@ -2592,7 +2591,7 @@ export class SelectQueryBuilder<Entity extends ObjectLiteral>
             joinedTable +
             this.createTableLockExpression() +
             (condition ? " ON " + condition : "") +
-            (nested ? "" : childJoins)
+            (nestChildJoins ? "" : childJoins)
         )
     }
 
