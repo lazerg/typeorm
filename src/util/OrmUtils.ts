@@ -160,6 +160,7 @@ export class OrmUtils {
 
     /**
      * Gets deeper value of object.
+     * Returns undefined when the path runs off the end of the object.
      *
      * @param obj
      * @param path
